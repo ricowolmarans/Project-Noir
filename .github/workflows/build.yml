@@ -1,0 +1,24 @@
+name: Build Noir
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Linux libraries
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libgl1-mesa-dev libx11-dev
+      - run: cargo build --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: noir-0.0.1-beta-${{ runner.os }}
+          path: |
+            target/release/noir
+            target/release/noir.exe
