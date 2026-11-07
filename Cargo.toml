@@ -1,0 +1,13 @@
+[package]
+name = "noir"
+version = "0.0.1"
+edition = "2021"
+description = "Noir browser 0.0.1 beta"
+
+[dependencies]
+eframe = "0.29"
+ureq = "2"
+
+[profile.release]
+lto = true
+strip = true
