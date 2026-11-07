@@ -4,21 +4,31 @@ on:
   push:
     branches: [main]
 jobs:
-  build:
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --release
+      - name: Build installer
+        shell: pwsh
+        run: |
+          choco install innosetup -y --no-progress
+          & "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe" installer.iss
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Noir-Windows-Installer
+          path: installer-out/Noir-Setup.exe
+  linux:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: dtolnay/rust-toolchain@stable
       - name: Linux libraries
-        if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libxkbcommon-dev libwayland-dev libgl1-mesa-dev libx11-dev
-      - run: cargo build --release
+      - run: cargo install cargo-deb
+      - run: cargo deb
       - uses: actions/upload-artifact@v4
         with:
-          name: noir-0.0.1-beta-${{ runner.os }}
-          path: |
-            target/release/noir
-            target/release/noir.exe
+          name: Noir-Debian-Package
+          path: target/debian/*.deb
