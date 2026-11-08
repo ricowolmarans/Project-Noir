@@ -397,3 +397,52 @@ fn apply(s: &mut Style, k: &str, v: &str, psize: f32) -> bool {
         "margin-bottom" => {
             if let Some(n) = parse_len(v, 15.0) {
                 s.mb = n.clamp(0.0, 60.0);
+            }
+        }
+        _ => {}
+    }
+    false
+}
+
+fn ua(s: &mut Style, tag: &str) {
+    match tag {
+        "h1" => {
+            s.size = 30.0;
+            s.bold = true;
+            s.mt = 12.0;
+            s.mb = 8.0;
+        }
+        "h2" => {
+            s.size = 24.0;
+            s.bold = true;
+            s.mt = 10.0;
+            s.mb = 6.0;
+        }
+        "h3" => {
+            s.size = 19.0;
+            s.bold = true;
+            s.mt = 8.0;
+            s.mb = 4.0;
+        }
+        "h4" | "h5" | "h6" => {
+            s.size = 16.0;
+            s.bold = true;
+            s.mt = 6.0;
+            s.mb = 4.0;
+        }
+        "b" | "strong" | "th" => s.bold = true,
+        "center" => s.center = true,
+        "p" => {
+            s.mt = 8.0;
+            s.mb = 8.0;
+        }
+        "ul" | "ol" | "blockquote" => {
+            s.mt = 6.0;
+            s.mb = 6.0;
+        }
+        "li" => s.mt = 2.0,
+        "small" => s.size *= 0.85,
+        "big" => s.size *= 1.2,
+        _ => {}
+    }
+}
