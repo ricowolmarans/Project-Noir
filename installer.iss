@@ -1,7 +1,7 @@
 [Setup]
 AppName=Noir
-AppVersion=0.0.3
-AppPublisher=Rico
+AppVersion=0.1.0
+AppPublisher=root
 DefaultDirName={autopf}\Noir
 DefaultGroupName=Noir
 OutputBaseFilename=Noir-Setup
