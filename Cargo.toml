@@ -1,9 +1,9 @@
 [package]
 name = "noir"
-version = "0.0.3"
+version = "0.1.0"
 edition = "2021"
 description = "Noir browser beta"
-authors = ["Rico"]
+authors = ["root"]
 
 [dependencies]
 eframe = "0.29"
